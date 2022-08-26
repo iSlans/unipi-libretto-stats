@@ -1,0 +1,14 @@
+body {
+  /* height: max-content; */
+  width: max-content;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  /* gap: 10px; */
+
+  font-size: 1em;
+  font-family: system-ui;
+}

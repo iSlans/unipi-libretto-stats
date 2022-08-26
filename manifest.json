@@ -1,0 +1,27 @@
+{
+    "name": "Libretto Stats",
+    "description": "Alice Unipi Statistiche Libretto ",
+    "version": "1.4",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "activeTab",
+        "declarativeContent"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.studenti.unipi.it/*"
+            ],
+            "js": [
+                "jquery.min.js",
+                "content.js"
+            ]
+        }
+    ]
+}

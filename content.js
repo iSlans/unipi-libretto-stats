@@ -7,6 +7,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.type) {
         case 'calculate':
             response = calculate(); break;
+        case 'toggleData':
+            response = toggle(); break;
         case 'setCheckbox':
             response = setCheckbox(); break;
     }
@@ -17,8 +19,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 function calculate() {
-    let crediti = $('#tableLibretto tr.voto td:nth-child(3)').toArray().map(x => parseInt(x.innerText));
-    let voti = $('#tableLibretto tr.voto td:nth-child(6)').toArray().map(x => x.innerText.includes('30L') ? 33 : parseInt(x.innerText));
+
+    let tableClass, votoColumn, creditoColumn;
+    if (window.location.href.search('libretto.unipi') >= 0) {
+        tableClass = '.table.table-hover.table-striped';
+        votoColumn = 'td:nth-child(3)';
+        creditoColumn = 'td:nth-child(5)'
+    } else {
+        tableClass = '#tableLibretto';
+        votoColumn = 'td:nth-child(6)';
+        creditoColumn = 'td:nth-child(3)'
+    }
+
+    let crediti = $(`${tableClass} tr.voto ${creditoColumn}`).toArray().map(x => parseInt(x.innerText));
+    let voti = $(`${tableClass} tr.voto ${votoColumn}`).toArray().map(x => x.innerText.match(/30L|30 L|lode/gi) ? 33 : parseInt(x.innerText));
     let votiInt = voti.filter(x => x);
 
     let totCrediti = crediti.reduce((sum, elem) => sum + elem, 0);
@@ -41,7 +55,7 @@ function calculate() {
     if (custom.length < 1) {
         custom = $('<div></div>');
         custom.addClass('custom-stats');
-        $('#tableLibretto').before(custom);
+        $(`${tableClass}`).before(custom);
 
         custom.css({
             margin: '5px auto',
@@ -63,8 +77,24 @@ function calculate() {
     return { totCrediti, media, mediaPesata };
 }
 
+function toggle() {
+    let custom = $('.custom-stats');
+    custom.toggle();
+    return 'toggled'
+}
+
 function setCheckbox() {
-    let first_td = $('#tableLibretto tr td:nth-child(1)');
+
+    let tableClass, boxCol;
+    if (window.location.href.search('libretto.unipi') >= 0) {
+        tableClass = '.table.table-hover.table-striped';
+        boxCol = 'td:nth-child(2)'
+    } else {
+        tableClass = '#tableLibretto';
+        boxCol = 'td:nth-child(1)'
+    }
+
+    let first_td = $(`${tableClass} tr ${boxCol}`);
 
     let checkbox = $('.extension_voto:checkbox');
     if (checkbox.length < 1) {
@@ -84,6 +114,9 @@ function setCheckbox() {
         function handleCheck(e) {
             const box = e.target;
             const tr = box.parentNode.parentNode;
+            if (tr.nodeName != 'TR') {
+                console.info('error: could not find tr element');
+            }
             tr.classList.toggle('voto', box.checked);
             // console.log('change', box.checked, tr);
 

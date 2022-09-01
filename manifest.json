@@ -1,7 +1,7 @@
 {
     "name": "Libretto Stats",
     "description": "Alice Unipi Statistiche Libretto ",
-    "version": "1.4",
+    "version": "1.5",
     "manifest_version": 3,
     "background": {
         "service_worker": "background.js"
@@ -16,7 +16,8 @@
     "content_scripts": [
         {
             "matches": [
-                "https://www.studenti.unipi.it/*"
+                "https://www.studenti.unipi.it/*",
+                "https://libretto.unipi.it/*"
             ],
             "js": [
                 "jquery.min.js",

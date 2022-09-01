@@ -1,7 +1,9 @@
 # unipi-libretto-stats
 
-Chrome extension package for Unipi Alice Libretto Booklet stats  
-www.studenti.unipi.it/auth/studente/Libretto/LibrettoHome.do
+Chrome extension package per Unipi Alice Libretto
 
-TODO  
-adapt for https://libretto.unipi.it/
+Statistiche di Crediti totali, Media voti, Media pesata
+Ogni voto ha un checkbox per includere/escludere dal calcolo
+
+https://www.studenti.unipi.it/auth/studente/Libretto/LibrettoHome.do
+https://libretto.unipi.it/

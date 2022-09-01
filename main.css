@@ -2,7 +2,7 @@ body {
   /* height: max-content; */
   width: max-content;
 
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   flex-direction: column;

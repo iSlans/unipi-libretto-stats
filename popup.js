@@ -1,11 +1,14 @@
-document.body.onload = () => { setCheckbox(); calc(); };
+document.body.onload = () => { setCheckbox(); calculate(); };
 
 const button = document.getElementById('calc_data');
-button.onclick = calc;
+button.onclick = calculate;
 // console.log(button);
 
-async function calc() {
-    const div = document.getElementById('custom_data');
+const toggle_checkbox = document.getElementById('toggle_data');
+toggle_checkbox.onclick = toggle;
+
+async function calculate() {
+    const popup_div = document.getElementById('custom_data');
 
     // Get current active tab
     let currentTab = chrome.tabs.query({ active: true, currentWindow: true });
@@ -20,7 +23,7 @@ async function calc() {
                 if (!response) return;
                 console.log("Got response from content script: ", response);
                 let { totCrediti, media, mediaPesata } = response;
-                div.innerHTML =
+                popup_div.innerHTML =
                     `<p> Totale: ${totCrediti} crediti</p>
                      <p> Media: ${media}</p>
                      <p> Media Pesata: ${mediaPesata}</p>
@@ -29,6 +32,23 @@ async function calc() {
         );
     });
 
+}
+
+async function toggle() {
+    let currentTab = chrome.tabs.query({ active: true, currentWindow: true });
+    currentTab.then(tabs => {
+        // console.log("Current Tab", tabs);
+        let tab = tabs[0];
+
+        chrome.tabs.sendMessage(
+            tab.id,
+            { type: "toggleData" },
+            (response) => {
+                if (!response) return;
+                console.log("Got response from content script: ", response);
+            }
+        );
+    });
 }
 
 async function setCheckbox() {
@@ -47,4 +67,3 @@ async function setCheckbox() {
         );
     });
 }
-
